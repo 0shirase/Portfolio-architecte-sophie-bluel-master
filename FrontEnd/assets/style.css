@@ -186,3 +186,30 @@ footer nav ul {
 	margin: 2em
 }
 
+.filters {
+	display: flex;
+	justify-content: center;
+	padding-bottom: 45px;
+	gap: 13px;
+}
+
+
+.btnfilter{
+	padding: 6px;
+	border-radius: 20px;
+	width: 135px;
+	border: 1px solid #1D6154;
+	background-color: white;
+	color: #1D6154;
+
+}
+
+.btnfilter.selected {
+    background-color: #1D6154;
+    color: white;
+}
+
+.btnfilterall {
+	background-color: #1D6154;
+	color: white;
+}
