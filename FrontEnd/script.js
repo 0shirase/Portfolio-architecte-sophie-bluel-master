@@ -62,7 +62,7 @@ function createWorks(works) {
     figure.appendChild(img);
     figure.appendChild(figcaption);
     gallery.appendChild(figure);
-}
+} 
 
 async function buttonfilters() {
     const dataCategories = await getCategories();
@@ -77,11 +77,17 @@ async function buttonfilters() {
 
         /**event listener pour les btn**/
         btnCategorie.addEventListener('click', function() {
+            const categoryId = category.id;
+
             /**suppression de la classe 'selected'**/
-            const allButtons = document.querySelectorAll('.btnfilter');
+           const allButtons = document.querySelectorAll('.btnfilter');
             allButtons.forEach(button => button.classList.remove('selected'));
+           
             /**Ajout de la classe 'selected' uniquement sur le btn sélectionné**/
             btnCategorie.classList.add('selected');
+            
+            /**Affichage des works suivant la catégorie**/
+            displayWorks(categoryId);
         });
     });
 }
