@@ -16,9 +16,11 @@
 	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 	<nav>
 		<ul>
-			<li>projets</li>
-			<li>contact</li>
-			<li>login</li>
+			<li id="projet">
+				<a href="./index.html">projets</a></li>
+			<li><a href="#contact">contact</a></li>
+			<li id="login"><a href="./login.html">login</a></li>
+			<li id="logout" style="display: none;"><a href="#">logout</a></li>
 			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
 	</nav>
@@ -38,7 +40,7 @@
 	<section id="portfolio">
 		<h2>Mes Projets</h2>
 		<div class="filters">
-			<button class="btnfilter btnfilterall">Tous</button>
+			<button class="btnfilter selected">Tous</button>
 		</div>
 		<div class="gallery">
 			

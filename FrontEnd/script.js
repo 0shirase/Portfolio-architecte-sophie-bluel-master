@@ -1,8 +1,9 @@
 const gallery = document.querySelector('.gallery');
+const filters = document.querySelector(".filters");
 
 async function main () {
     displayWorks ();
-    buttonfilters ();
+    displayfilters ();
 }
 
 main();
@@ -64,30 +65,45 @@ function createWorks(works) {
     gallery.appendChild(figure);
 } 
 
-async function buttonfilters() {
+function createFilter(category) {
+    const btnCategorie = document.createElement("button");
+    btnCategorie.innerText = category.name;
+    btnCategorie.setAttribute("class", "btnfilter");
+    btnCategorie.setAttribute("buttonID", category.id);
+    filters.appendChild(btnCategorie);
+} 
+
+async function displayfilters() {
     const dataCategories = await getCategories();
-    const filters = document.querySelector(".filters");
+    
 
     dataCategories.forEach((category) => {
-        const btnCategorie = document.createElement("button");
-        btnCategorie.innerText = category.name;
-        btnCategorie.setAttribute("class", "btnfilter");
-        btnCategorie.setAttribute("buttonID", category.id);
-        filters.appendChild(btnCategorie);
+        
+        createFilter(category)
+        
+    });
 
+    const allButtons = document.querySelectorAll('.btnfilter');
+
+    allButtons.forEach((btnCategorie) => {
+        
         /**event listener pour les btn**/
         btnCategorie.addEventListener('click', function() {
-            const categoryId = category.id;
+            
+            let categoryId = btnCategorie.getAttribute("buttonID");
 
             /**suppression de la classe 'selected'**/
-           const allButtons = document.querySelectorAll('.btnfilter');
+        
             allButtons.forEach(button => button.classList.remove('selected'));
-           
+        
             /**Ajout de la classe 'selected' uniquement sur le btn sélectionné**/
             btnCategorie.classList.add('selected');
             
             /**Affichage des works suivant la catégorie**/
             displayWorks(categoryId);
         });
+        
     });
+
+   
 }
