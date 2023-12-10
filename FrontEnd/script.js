@@ -107,3 +107,19 @@ async function displayfilters() {
 
    
 }
+
+// Vérification de la connexion sur index.html
+document.addEventListener("DOMContentLoaded", function() {
+    const loginLink = document.getElementById("login");
+    const logoutLink = document.getElementById("logout");
+
+    const token = sessionStorage.getItem("token"); // ou localStorage.getItem("token")
+
+    if (token) {
+        loginLink.style.display = "none";
+        logoutLink.style.display = "block";
+    } else {
+        loginLink.style.display = "block";
+        logoutLink.style.display = "none";
+    }
+});
