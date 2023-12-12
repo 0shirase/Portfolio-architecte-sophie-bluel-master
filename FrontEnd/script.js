@@ -109,12 +109,11 @@ async function displayfilters() {
 }
 
 // Vérification de la connexion sur index.html
-document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function() {
     const loginLink = document.getElementById("login");
     const logoutLink = document.getElementById("logout");
 
-    const token = sessionStorage.getItem("token"); // ou localStorage.getItem("token")
-
+    const token = sessionStorage.getItem("token"); 
     if (token) {
         loginLink.style.display = "none";
         logoutLink.style.display = "block";
@@ -122,4 +121,10 @@ document.addEventListener("DOMContentLoaded", function() {
         loginLink.style.display = "block";
         logoutLink.style.display = "none";
     }
+
+    // Gestionnaire d'événement pour la déconnexion
+        logoutLink.addEventListener("click", function() {
+        sessionStorage.removeItem("token"); // Supprimer le token de la session
+        window.location.href = "./index.html"; // Rediriger vers la page de connexion
+    });
 });
