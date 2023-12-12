@@ -108,7 +108,7 @@ async function displayfilters() {
    
 }
 
-// Vérification de la connexion sur index.html
+/**Vérification de la connexion sur index.html**/
     document.addEventListener("DOMContentLoaded", function() {
     const loginLink = document.getElementById("login");
     const logoutLink = document.getElementById("logout");
@@ -122,9 +122,9 @@ async function displayfilters() {
         logoutLink.style.display = "none";
     }
 
-    // Gestionnaire d'événement pour la déconnexion
+    /**Gestionnaire d'événement pour la déconnexion**/
         logoutLink.addEventListener("click", function() {
-        sessionStorage.removeItem("token"); // Supprimer le token de la session
-        window.location.href = "./index.html"; // Rediriger vers la page de connexion
+        sessionStorage.removeItem("token"); 
+        window.location.href = "./index.html"; 
     });
 });
