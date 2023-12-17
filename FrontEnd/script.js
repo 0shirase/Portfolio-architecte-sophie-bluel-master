@@ -4,6 +4,9 @@ const filters = document.querySelector(".filters");
 async function main () {
     displayWorks ();
     displayfilters ();
+    admin();
+    hideFilterButtons();
+    createModalButton();
 }
 
 main();
@@ -109,7 +112,7 @@ async function displayfilters() {
 }
 
 /**Vérification de la connexion sur index.html**/
-    document.addEventListener("DOMContentLoaded", function() {
+    function admin() {
     const loginLink = document.getElementById("login");
     const logoutLink = document.getElementById("logout");
 
@@ -117,14 +120,77 @@ async function displayfilters() {
     if (token) {
         loginLink.style.display = "none";
         logoutLink.style.display = "block";
+
+        /**Gestionnaire d'événement pour la déconnexion**/
+        logoutLink.addEventListener("click", function() {
+            sessionStorage.removeItem("token"); 
+            window.location.href = "./index.html"; 
+        });
+
+        /*Création de la bannière*/
+const blackBanner = document.createElement('div');
+blackBanner.style.backgroundColor = 'black';
+blackBanner.style.width = '100%';
+blackBanner.style.height = '40px'; 
+blackBanner.style.display = 'flex';
+blackBanner.style.justifyContent = 'center';
+blackBanner.style.alignItems = 'center';
+blackBanner.style.color = 'white';
+
+/*Création du span pour l'icône et le texte*/
+const iconTextContainer = document.createElement('span');
+iconTextContainer.style.display = 'flex';
+iconTextContainer.style.alignItems = 'center';
+/*Création de l'icône crayon*/
+
+const icon = document.createElement('i');
+icon.classList.add('fas', 'fa-pen-to-square');
+icon.style.marginRight = '5px'; 
+iconTextContainer.appendChild(icon);
+
+/*Création du texte*/
+const textNode = document.createTextNode('Mode édition');
+iconTextContainer.appendChild(textNode);
+
+/*Ajout du span à l'intérieur de la bannière*/
+blackBanner.appendChild(iconTextContainer);
+
+/*Ajout de la bannière noire à l'élément banner*/
+banner.appendChild(blackBanner);
+
+/*Fonction pour créer le bouton modal*/
+function createModalButton() {
+
+    const modalButton = document.createElement("button");
+    modalButton.innerText = "Ouvrir la fenêtre modale";
+    modalButton.setAttribute("id", "modalButton");
+    modalButton.style.marginBottom = "10px"; 
+    filters.appendChild(modalButton);
+
+    /*Event listener de la fenêtre modal*/
+    modalButton.addEventListener('click', openModal);
+}
+
+/*Fonction pour afficher la fenêtre modale*/
+function openModal() {
+    
+}
+
+/*Fonction pour masquer les boutons de filtre si l'utilisateur est connecté et afficher le bouton modal*/
+function hideFilterButtons() {
+    const filterButtons = document.querySelectorAll('.btnfilter');
+    const isAdmin = admin(); 
+
+    if (isAdmin) {
+        filterButtons.forEach(button => {
+            button.style.display = 'none'; 
+        });
+    }
+}
+
     } else {
         loginLink.style.display = "block";
         logoutLink.style.display = "none";
     }
+};
 
-    /**Gestionnaire d'événement pour la déconnexion**/
-        logoutLink.addEventListener("click", function() {
-        sessionStorage.removeItem("token"); 
-        window.location.href = "./index.html"; 
-    });
-});
