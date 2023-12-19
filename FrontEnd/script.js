@@ -171,12 +171,8 @@ function createModalButton() {
     modalButton.addEventListener('click', openModal);
 }
 
-/*Fonction pour afficher la fenêtre modale*/
-function openModal() {
-    
-}
 
-/*Fonction pour masquer les boutons de filtre si l'utilisateur est connecté et afficher le bouton modal*/
+/*Fonction pour masquer les boutons filtres si l'utilisateur est connecté*/
 function hideFilterButtons() {
     const filterButtons = document.querySelectorAll('.btnfilter');
     const isAdmin = admin(); 
