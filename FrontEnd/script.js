@@ -7,6 +7,7 @@ async function main() {
     displayWorks();
     displayfilters();
     admin();
+    displayWorksInModal();
 }
 
 main();
@@ -109,6 +110,42 @@ async function displayfilters() {
     });
 
 
+}
+
+
+
+// Fonction pour afficher les works dans la fenêtre modale
+async function displayWorksInModal() {
+    const modalWrapper = document.querySelector('.modal-wrapper');
+
+    try {
+        const worksResponse = await fetch("http://localhost:5678/api/works");
+        const dataWorks = await worksResponse.json();
+
+        modalWrapper.innerHTML = ""; // Nettoie le contenu existant de la fenêtre modale
+        
+        dataWorks.forEach((work) => {
+            const workElement = createWorkElement(work); 
+            modalWrapper.appendChild(workElement); 
+        });
+    } catch (error) {
+        console.log("Erreur lors de l'affichage des works dans la fenêtre modale : ", error);
+    }
+}
+
+// Fonction pour créer un élément HTML pour un work
+function createWorkElement(work) {
+    const figure = document.createElement("figure");
+    const img = document.createElement("img");
+    const figcaption = document.createElement("figcaption");
+
+    img.src = work.imageUrl;
+    figcaption.innerText = work.title;
+
+    figure.appendChild(img);
+    figure.appendChild(figcaption);
+
+    return figure;
 }
 
 /**Vérification de la connexion sur index.html**/
@@ -222,3 +259,5 @@ function closeModal() {
     modal.style.display = 'none'; 
     modal.setAttribute('aria-hidden', 'true'); 
 }
+
+
