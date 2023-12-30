@@ -23,6 +23,8 @@ time, mark, audio, video {
 	font: inherit;
 	vertical-align: baseline;
 }
+
+* {box-sizing: border-box; }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
@@ -214,8 +216,34 @@ footer nav ul {
     color: white;
 }
 
-
-
 .fa-pencil {
 	color: white;
 }
+
+.portfoliotitle {
+	display: flex;
+	justify-content: center;
+}
+
+/* modal */
+.modal {
+	position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+	
+}
+
+.modal-wrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: auto;
+	width: 600px;
+	padding: 20px;
+	background-color: #FFF;
+}
+
+
