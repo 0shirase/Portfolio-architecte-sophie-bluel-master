@@ -238,12 +238,23 @@ footer nav ul {
 
 .modal-wrapper {
 	display: flex;
-	justify-content: center;
-	align-items: center;
-	overflow: auto;
-	width: 600px;
-	padding: 20px;
-	background-color: #FFF;
+    align-items: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow: auto;
+    width: 49%;
+    padding: 110px;
+    background-color: #FFF;
+	gap: 10px;
+	flex-wrap: wrap;
 }
 
 
+.modal-wrapper .modal-image {
+    width: 100px; 
+	height: 130px;
+    display: flex;
+	
+}	
