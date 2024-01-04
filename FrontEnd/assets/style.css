@@ -258,3 +258,29 @@ footer nav ul {
     display: flex;
 	
 }	
+
+.modal-wrapper h3 {
+	text-align: center;
+	font-size: 24px;
+	margin-top: 20px;
+	width: 100%;
+}
+
+/* Style pour le bouton de fermeture de la fenêtre modale */
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 24px;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 0;
+    margin: 0;
+    color: #888; /* Couleur de la croix */
+}
+
+.close-button:hover {
+    color: #000; /* Couleur de la croix au survol */
+}

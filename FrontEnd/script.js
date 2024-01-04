@@ -207,26 +207,7 @@ modifiedButton.addEventListener('click', openModal);
 /*création du contenu de la fenêtre modale*/
 const modalWrapper = document.querySelector('.modal-wrapper');
 
-
-/* Fonction pour afficher les works dans la fenêtre modale */
-async function displayWorksInModal() {
-    const modalWrapper = document.querySelector('.modal-wrapper');
-
-    try {
-        const worksResponse = await fetch("http://localhost:5678/api/works");
-        const dataWorks = await worksResponse.json();
-
-        modalWrapper.innerHTML = "";
-
-        dataWorks.forEach((work) => {
-            const workElement = createWorkElement(work);
-            modalWrapper.appendChild(workElement);
-        });
-    } catch (error) {
-        console.log("Erreur lors de l'affichage des works dans la fenêtre modale : ", error);
-    }
-}
-
+/* ajout des images pour la gallery modale*/
 function createWorkElement(work) {
     const figure = document.createElement("figure");
     const img = document.createElement("img");
@@ -238,3 +219,48 @@ function createWorkElement(work) {
 
     return figure;
 }
+
+/* Fonction pour afficher les works dans la fenêtre modale */
+async function displayWorksInModal() {
+    const modalWrapper = document.querySelector('.modal-wrapper');
+
+    try {
+        const worksResponse = await fetch("http://localhost:5678/api/works");
+        const dataWorks = await worksResponse.json();
+
+        modalWrapper.innerHTML = "";
+
+    /*Ajout du titre "Galerie photo"*/
+    const galleryTitle = document.createElement('h3');
+    galleryTitle.textContent = 'Galerie photo';
+    galleryTitle.style.textAlign = 'center';
+    modalWrapper.appendChild(galleryTitle);
+
+    const galleryContainer = document.createElement('div');
+        galleryContainer.classList.add('gallery-container');
+        modalWrapper.appendChild(galleryContainer);
+
+        dataWorks.forEach((work) => {
+            const workElement = createWorkElement(work);
+            modalWrapper.appendChild(workElement);
+        });
+    } catch (error) {
+        console.log("Erreur lors de l'affichage des works dans la fenêtre modale : ", error);
+    }
+}
+
+
+
+/*Sélection du bouton de fermeture*/
+const closeButton = document.querySelector('.close-button');
+/*Sélection de la fenêtre modale*/
+const modal = document.querySelector('#modal1');
+
+/*Fonction pour fermer la fenêtre modale*/
+function closeModal() {
+    modal.style.display = 'none';
+    modal.setAttribute('aria-hidden', 'true');
+}
+
+/*gestionnaire d'événements sur le bouton de fermeture*/
+closeButton.addEventListener('click', closeModal);
