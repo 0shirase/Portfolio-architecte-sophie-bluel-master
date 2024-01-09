@@ -1,13 +1,14 @@
 const gallery = document.querySelector('.gallery');
 const filters = document.querySelector(".filters");
 const portfoliotitle = document.querySelector(".portfoliotitle");
-
+const modal = document.querySelector('#modal1');
 
 async function main() {
     displayWorks();
     displayfilters();
     admin();
     displayWorksInModal();
+    closeModal();
 }
 
 main();
@@ -59,13 +60,24 @@ function createWorks(works) {
     const figure = document.createElement("figure");
     const img = document.createElement("img");
     const figcaption = document.createElement("figcaption");
+    const deleteIcon = document.createElement('i');
 
     img.src = works.imageUrl;
     figcaption.innerText = works.title;
     figure.setAttribute("categorieId", works.category.id);
 
+    deleteIcon.classList.add('fas', 'fa-trash-alt'); 
+    deleteIcon.style.cursor = 'pointer';
+
+    deleteIcon.addEventListener('click', async () => {
+        if (confirm('Voulez-vous vraiment supprimer ce projet ?')) {
+            deleteProject(works.id);
+        }
+    });
+
     figure.appendChild(img);
     figure.appendChild(figcaption);
+    figure.appendChild(deleteIcon);
     gallery.appendChild(figure);
 }
 
@@ -236,13 +248,28 @@ async function displayWorksInModal() {
     galleryTitle.style.textAlign = 'center';
     modalWrapper.appendChild(galleryTitle);
 
-    const galleryContainer = document.createElement('div');
-        galleryContainer.classList.add('gallery-container');
-        modalWrapper.appendChild(galleryContainer);
+    
 
         dataWorks.forEach((work) => {
             const workElement = createWorkElement(work);
             modalWrapper.appendChild(workElement);
+        });
+        /* Création du bouton "Ajouter une photo" */
+        const addPhotoButtonModal = document.createElement('button');
+        addPhotoButtonModal.textContent = 'Ajouter une photo';
+        addPhotoButtonModal.classList.add('add-photo-button');
+        addPhotoButtonModal.style.backgroundColor = '#1D6154'; 
+        addPhotoButtonModal.style.color = 'white';
+        addPhotoButtonModal.style.padding = '10px';
+        addPhotoButtonModal.style.border = 'none';
+        addPhotoButtonModal.style.cursor = 'pointer';
+        addPhotoButtonModal.style.marginTop = '20px'; 
+
+        /*Insérer le bouton après la galerie d'images*/
+        modalWrapper.appendChild(addPhotoButtonModal);
+        /*Gestionnaire d'événements pour le bouton Ajouter une photo*/
+        addPhotoButtonModal.addEventListener('click', function() {
+            console.log('Ajouter une photo');
         });
     } catch (error) {
         console.log("Erreur lors de l'affichage des works dans la fenêtre modale : ", error);
@@ -250,17 +277,33 @@ async function displayWorksInModal() {
 }
 
 
-
-/*Sélection du bouton de fermeture*/
-const closeButton = document.querySelector('.close-button');
-/*Sélection de la fenêtre modale*/
-const modal = document.querySelector('#modal1');
-
 /*Fonction pour fermer la fenêtre modale*/
 function closeModal() {
     modal.style.display = 'none';
     modal.setAttribute('aria-hidden', 'true');
 }
 
-/*gestionnaire d'événements sur le bouton de fermeture*/
-closeButton.addEventListener('click', closeModal);
+/*Gestionnaire d'événements pour détecter les clics en dehors de la fenêtre */
+window.addEventListener('click', function(event) {
+    if (event.target === modal) {
+        closeModal();
+    }
+});
+
+/*Fonction pour supprimer un work*/
+async function deleteProject(projectId) {
+    try {
+        const response = await fetch(`http://localhost:5678/api/works/${projectId}`, {
+            method: 'DELETE',
+        });
+
+        if (response.ok) {
+            /*actualisation de la galerie après la suppression du work*/
+            displayWorks();
+        } else {
+            console.error('La suppression du projet a échoué.');
+        }
+    } catch (error) {
+        console.error('Erreur lors de la suppression du projet :', error);
+    }
+}
