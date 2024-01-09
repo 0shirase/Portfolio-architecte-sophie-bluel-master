@@ -211,25 +211,25 @@ const modalWrapper = document.querySelector('.modal-wrapper');
 /* ajout des images pour la gallery modale*/
 function createWorkElement(work) {
     const figure = document.createElement("figure");
-    const imgContainer = document.createElement("div"); 
+    const imgContainer = document.createElement("div");
     const img = document.createElement("img");
-    const deleteIcon = document.createElement("button"); 
+    const deleteIcon = document.createElement("button");
 
     img.src = work.imageUrl;
     img.classList.add('modal-image');
 
     imgContainer.appendChild(img);
-    imgContainer.classList.add('img-container'); 
+    imgContainer.classList.add('img-container');
 
     deleteIcon.innerHTML = '<i class="fas fa-trash-alt"></i>';
-    deleteIcon.classList.add('delete-button'); 
+    deleteIcon.classList.add('delete-button');
     deleteIcon.addEventListener('click', async () => {
         if (confirm('Voulez-vous vraiment supprimer ce projet ?')) {
             deleteProject(work.id);
         }
     });
 
-    imgContainer.appendChild(deleteIcon); 
+    imgContainer.appendChild(deleteIcon);
     figure.appendChild(imgContainer);
     return figure;
 }
@@ -244,13 +244,28 @@ async function displayWorksInModal() {
 
         modalWrapper.innerHTML = "";
 
-    /*Ajout du titre "Galerie photo"*/
-    const galleryTitle = document.createElement('h3');
-    galleryTitle.textContent = 'Galerie photo';
-    galleryTitle.style.textAlign = 'center';
-    modalWrapper.appendChild(galleryTitle);
+        /*Création de l'élément pour la croix de fermeture*/
+        const closeButton = document.createElement('span');
+        closeButton.innerHTML = '&times;';
+        closeButton.classList.add('close-button');
+        modalWrapper.appendChild(closeButton);
 
-    
+        /*eventlistener pour fermer la fenêtre modale en cliquant sur la croix*/
+        closeButton.addEventListener('click', closeModal);
+
+        /*eventlistener pour la touche Échap qui permet de fermer la fenêtre modale*/
+        window.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+        /*Ajout du titre "Galerie photo"*/
+        const galleryTitle = document.createElement('h3');
+        galleryTitle.textContent = 'Galerie photo';
+        galleryTitle.style.textAlign = 'center';
+        modalWrapper.appendChild(galleryTitle);
+
+
 
         dataWorks.forEach((work) => {
             const workElement = createWorkElement(work);
@@ -260,17 +275,17 @@ async function displayWorksInModal() {
         const addPhotoButtonModal = document.createElement('button');
         addPhotoButtonModal.textContent = 'Ajouter une photo';
         addPhotoButtonModal.classList.add('add-photo-button');
-        addPhotoButtonModal.style.backgroundColor = '#1D6154'; 
+        addPhotoButtonModal.style.backgroundColor = '#1D6154';
         addPhotoButtonModal.style.color = 'white';
         addPhotoButtonModal.style.padding = '10px';
         addPhotoButtonModal.style.border = 'none';
         addPhotoButtonModal.style.cursor = 'pointer';
-        addPhotoButtonModal.style.marginTop = '20px'; 
+        addPhotoButtonModal.style.marginTop = '20px';
 
         /*Insérer le bouton après la galerie d'images*/
         modalWrapper.appendChild(addPhotoButtonModal);
         /*Gestionnaire d'événements pour le bouton Ajouter une photo*/
-        addPhotoButtonModal.addEventListener('click', function() {
+        addPhotoButtonModal.addEventListener('click', function () {
             console.log('Ajouter une photo');
         });
     } catch (error) {
@@ -286,7 +301,7 @@ function closeModal() {
 }
 
 /*Gestionnaire d'événements pour détecter les clics en dehors de la fenêtre */
-window.addEventListener('click', function(event) {
+window.addEventListener('click', function (event) {
     if (event.target === modal) {
         closeModal();
     }
