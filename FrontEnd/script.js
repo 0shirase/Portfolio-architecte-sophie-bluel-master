@@ -60,24 +60,13 @@ function createWorks(works) {
     const figure = document.createElement("figure");
     const img = document.createElement("img");
     const figcaption = document.createElement("figcaption");
-    const deleteIcon = document.createElement('i');
 
     img.src = works.imageUrl;
     figcaption.innerText = works.title;
     figure.setAttribute("categorieId", works.category.id);
 
-    deleteIcon.classList.add('fas', 'fa-trash-alt'); 
-    deleteIcon.style.cursor = 'pointer';
-
-    deleteIcon.addEventListener('click', async () => {
-        if (confirm('Voulez-vous vraiment supprimer ce projet ?')) {
-            deleteProject(works.id);
-        }
-    });
-
     figure.appendChild(img);
     figure.appendChild(figcaption);
-    figure.appendChild(deleteIcon);
     gallery.appendChild(figure);
 }
 
@@ -222,13 +211,26 @@ const modalWrapper = document.querySelector('.modal-wrapper');
 /* ajout des images pour la gallery modale*/
 function createWorkElement(work) {
     const figure = document.createElement("figure");
+    const imgContainer = document.createElement("div"); 
     const img = document.createElement("img");
+    const deleteIcon = document.createElement("button"); 
 
     img.src = work.imageUrl;
     img.classList.add('modal-image');
 
-    figure.appendChild(img);
+    imgContainer.appendChild(img);
+    imgContainer.classList.add('img-container'); 
 
+    deleteIcon.innerHTML = '<i class="fas fa-trash-alt"></i>';
+    deleteIcon.classList.add('delete-button'); 
+    deleteIcon.addEventListener('click', async () => {
+        if (confirm('Voulez-vous vraiment supprimer ce projet ?')) {
+            deleteProject(work.id);
+        }
+    });
+
+    imgContainer.appendChild(deleteIcon); 
+    figure.appendChild(imgContainer);
     return figure;
 }
 
@@ -290,20 +292,4 @@ window.addEventListener('click', function(event) {
     }
 });
 
-/*Fonction pour supprimer un work*/
-async function deleteProject(projectId) {
-    try {
-        const response = await fetch(`http://localhost:5678/api/works/${projectId}`, {
-            method: 'DELETE',
-        });
 
-        if (response.ok) {
-            /*actualisation de la galerie après la suppression du work*/
-            displayWorks();
-        } else {
-            console.error('La suppression du projet a échoué.');
-        }
-    } catch (error) {
-        console.error('Erreur lors de la suppression du projet :', error);
-    }
-}

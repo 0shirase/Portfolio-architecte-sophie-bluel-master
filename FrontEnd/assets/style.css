@@ -265,17 +265,21 @@ footer nav ul {
 	width: 100%;
 }
 
-.close-modal {
-	position: absolute;
-	top: 10px;
-	right: 10px;
-	font-size: 24px;
-	color: #000; /* Couleur de la croix */
-	background-color: transparent;
-	border: none;
-	cursor: pointer;
-  }
-  
-  .close-modal:hover {
-	color: #B1663C; /* Couleur au survol */
-  }
+  /* Ajoutez ce style pour le conteneur de l'image */
+.img-container {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Style pour le bouton de suppression */
+.delete-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: none;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    z-index: 2; 
+	background-color: black;
+}
