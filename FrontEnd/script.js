@@ -39,6 +39,21 @@ async function getCategories() {
 }
 
 
+/* fonction pour delete les works avec l'API */
+async function deleteProject(projectId) {
+    try {
+        const response = await fetch(`http://localhost:5678/api/works/1`, {
+            method: 'DELETE',
+        });
+
+        if (!response.ok) {
+            throw new Error('Erreur lors de la suppression du projet');
+        }
+    } catch (error) {
+        console.error(error.message);
+    }
+}
+
 /***Affichage dynamique de la gallery***/
 async function displayWorks(categorieId) {
 
@@ -165,8 +180,7 @@ function admin() {
         /*zone filtre cachée*/
         filters.style.display = 'none';
 
-        /*Sélection de la classe portfoliotitle
-        const portfolioTitle = document.querySelector('.portfoliotitle');*/
+     
 
 /* selection du porfolio*/
 const portfolioTitle = document.querySelector('.portfoliotitle');
@@ -176,7 +190,7 @@ const modifiedButton = document.createElement('div');
 modifiedButton.classList.add('modified-button');
 
 /* clone l'icone déjà crée */ 
-const clonedIcon = icon.cloneNode(true); // true means deep clone, copying children as well
+const clonedIcon = icon.cloneNode(true); 
 
 /* ajoute l'icone cloné à la div modifiedButton*/
 modifiedButton.appendChild(clonedIcon);
@@ -242,7 +256,7 @@ function createWorkElement(work) {
     deleteIcon.addEventListener('click', async () => {
         if (confirm('Voulez-vous vraiment supprimer ce projet ?')) {
             await deleteProject(work.id);
-            // Refresh the works in the modal after deletion
+            
         }
     });
 
@@ -341,17 +355,3 @@ window.addEventListener('click', function (event) {
 });
 
 
-/* Function to delete a project by ID using the API */
-async function deleteProject(projectId) {
-    try {
-        const response = await fetch(`http://localhost:5678/api/works/1`, {
-            method: 'DELETE',
-        });
-
-        if (!response.ok) {
-            throw new Error('Erreur lors de la suppression du projet');
-        }
-    } catch (error) {
-        console.error(error.message);
-    }
-}
