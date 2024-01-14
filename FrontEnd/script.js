@@ -37,6 +37,8 @@ async function getCategories() {
         console.log("Erreur durant la récupération des catégories dans l'API")
     }
 }
+
+
 /***Affichage dynamique de la gallery***/
 async function displayWorks(categorieId) {
 
@@ -236,9 +238,11 @@ function createWorkElement(work) {
     deleteIcon.innerHTML = '<i class="fas fa-trash-alt"></i>';
     deleteIcon.classList.add('delete-button');
     deleteIcon.style.fontWeight = 'normal';
+    
     deleteIcon.addEventListener('click', async () => {
         if (confirm('Voulez-vous vraiment supprimer ce projet ?')) {
-            deleteProject(work.id);
+            await deleteProject(work.id);
+            // Refresh the works in the modal after deletion
         }
     });
 
@@ -337,3 +341,17 @@ window.addEventListener('click', function (event) {
 });
 
 
+/* Function to delete a project by ID using the API */
+async function deleteProject(projectId) {
+    try {
+        const response = await fetch(`http://localhost:5678/api/works/1`, {
+            method: 'DELETE',
+        });
+
+        if (!response.ok) {
+            throw new Error('Erreur lors de la suppression du projet');
+        }
+    } catch (error) {
+        console.error(error.message);
+    }
+}
