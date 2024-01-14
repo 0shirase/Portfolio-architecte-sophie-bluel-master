@@ -180,42 +180,42 @@ function admin() {
         /*zone filtre cachée*/
         filters.style.display = 'none';
 
-     
-
-/* selection du porfolio*/
-const portfolioTitle = document.querySelector('.portfoliotitle');
-
-/* création de la div pour l'icone et le texte */
-const modifiedButton = document.createElement('div');
-modifiedButton.classList.add('modified-button');
-
-/* clone l'icone déjà crée */ 
-const clonedIcon = icon.cloneNode(true); 
-
-/* ajoute l'icone cloné à la div modifiedButton*/
-modifiedButton.appendChild(clonedIcon);
-
-/*création du texte modifié*/
-const buttonText = document.createTextNode('Modifié');
-
-/*ajoute le texte à la div modifiedButton*/
-modifiedButton.appendChild(buttonText);
-
-/* style pour le bouton modifié*/
-modifiedButton.style.display = 'flex';
-modifiedButton.style.alignItems = 'center';
-modifiedButton.style.cursor = 'pointer';
-modifiedButton.style.color = 'black';
-modifiedButton.style.fontSize = '15px';
-
-buttonText.parentNode.style.fontWeight = 'normal';
 
 
-/*event listener pour ouvrir la modale*/
-modifiedButton.addEventListener('click', openModal);
+        /* selection du porfolio*/
+        const portfolioTitle = document.querySelector('.portfoliotitle');
 
-/*ajout de la div modifiedButton à la div portofoliotitle*/
-portfolioTitle.appendChild(modifiedButton)
+        /* création de la div pour l'icone et le texte */
+        const modifiedButton = document.createElement('div');
+        modifiedButton.classList.add('modified-button');
+
+        /* clone l'icone déjà crée */
+        const clonedIcon = icon.cloneNode(true);
+
+        /* ajoute l'icone cloné à la div modifiedButton*/
+        modifiedButton.appendChild(clonedIcon);
+
+        /*création du texte modifié*/
+        const buttonText = document.createTextNode('Modifié');
+
+        /*ajoute le texte à la div modifiedButton*/
+        modifiedButton.appendChild(buttonText);
+
+        /* style pour le bouton modifié*/
+        modifiedButton.style.display = 'flex';
+        modifiedButton.style.alignItems = 'center';
+        modifiedButton.style.cursor = 'pointer';
+        modifiedButton.style.color = 'black';
+        modifiedButton.style.fontSize = '15px';
+
+        buttonText.parentNode.style.fontWeight = 'normal';
+
+
+        /*event listener pour ouvrir la modale*/
+        modifiedButton.addEventListener('click', openModal);
+
+        /*ajout de la div modifiedButton à la div portofoliotitle*/
+        portfolioTitle.appendChild(modifiedButton)
     } else {
         loginLink.style.display = "block";
         logoutLink.style.display = "none";
@@ -252,11 +252,11 @@ function createWorkElement(work) {
     deleteIcon.innerHTML = '<i class="fas fa-trash-alt"></i>';
     deleteIcon.classList.add('delete-button');
     deleteIcon.style.fontWeight = 'normal';
-    
+
     deleteIcon.addEventListener('click', async () => {
         if (confirm('Voulez-vous vraiment supprimer ce projet ?')) {
             await deleteProject(work.id);
-            
+
         }
     });
 
@@ -312,6 +312,11 @@ async function displayWorksInModal() {
         });
 
         modalWrapper.appendChild(worksDiv);
+
+        /*création et ajout d'une div pour la linedivider */
+        const lineDivider = document.createElement('div');
+        lineDivider.classList.add('line-divider');
+        modalWrapper.appendChild(lineDivider);
 
         /* Création de la div pour le bouton "Ajouter une photo" */
         const addPhotoButtonModal = document.createElement('div');

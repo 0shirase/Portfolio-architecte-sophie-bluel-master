@@ -290,10 +290,18 @@ footer nav ul {
 }
 
 
+.line-divider {
+    width: 100%;
+    height: 1px;
+    background-color: #B3B3B3; 
+    margin: 10px 0; 
+}
+
   /* Ajoutez ce style pour le conteneur de l'image */
 .img-container {
     position: relative;
     overflow: hidden;
+	padding-bottom: 15px;
 }
 
 /* Style pour le bouton de suppression */
@@ -314,8 +322,8 @@ footer nav ul {
 
 .fa-trash-alt {
 	font-weight: normal;
-	
 }
+
 
 .close-button {
 	position: absolute;
