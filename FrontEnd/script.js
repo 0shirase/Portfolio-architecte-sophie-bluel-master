@@ -163,31 +163,43 @@ function admin() {
         /*zone filtre cachée*/
         filters.style.display = 'none';
 
-        /*Sélection de la classe portfoliotitle*/
-        const portfolioTitle = document.querySelector('.portfoliotitle');
+        /*Sélection de la classe portfoliotitle
+        const portfolioTitle = document.querySelector('.portfoliotitle');*/
 
-        /*Création du bouton "modifié"*/
-        const modal = document.createElement('div');
-        modal.classList.add('modified-button');
-        modal.style.width = '100px';
-        modal.style.height = '30px';
-        modal.style.display = 'flex';
-        modal.style.justifyContent = 'center';
-        modal.style.alignItems = 'center';
-        modal.style.cursor = 'pointer';
-        modal.style.color = 'black';
-        modal.style.fontSize = '15px';
+/* selection du porfolio*/
+const portfolioTitle = document.querySelector('.portfoliotitle');
+
+/* création de la div pour l'icone et le texte */
+const modifiedButton = document.createElement('div');
+modifiedButton.classList.add('modified-button');
+
+/* clone l'icone déjà crée */ 
+const clonedIcon = icon.cloneNode(true); // true means deep clone, copying children as well
+
+/* ajoute l'icone cloné à la div modifiedButton*/
+modifiedButton.appendChild(clonedIcon);
+
+/*création du texte modifié*/
+const buttonText = document.createTextNode('Modifié');
+
+/*ajoute le texte à la div modifiedButton*/
+modifiedButton.appendChild(buttonText);
+
+/* style pour le bouton modifié*/
+modifiedButton.style.display = 'flex';
+modifiedButton.style.alignItems = 'center';
+modifiedButton.style.cursor = 'pointer';
+modifiedButton.style.color = 'black';
+modifiedButton.style.fontSize = '15px';
+
+buttonText.parentNode.style.fontWeight = 'normal';
 
 
-        /*Création du texte dans le bouton*/
-        const buttonText = document.createTextNode('Modifié');
-        modal.appendChild(buttonText);
+/*event listener pour ouvrir la modale*/
+modifiedButton.addEventListener('click', openModal);
 
-
-
-        /*Ajout du bouton "modifié" à l'élément portfoliotitle*/
-        portfolioTitle.appendChild(modal);
-
+/*ajout de la div modifiedButton à la div portofoliotitle*/
+portfolioTitle.appendChild(modifiedButton)
     } else {
         loginLink.style.display = "block";
         logoutLink.style.display = "none";
@@ -223,6 +235,7 @@ function createWorkElement(work) {
 
     deleteIcon.innerHTML = '<i class="fas fa-trash-alt"></i>';
     deleteIcon.classList.add('delete-button');
+    deleteIcon.style.fontWeight = 'normal';
     deleteIcon.addEventListener('click', async () => {
         if (confirm('Voulez-vous vraiment supprimer ce projet ?')) {
             deleteProject(work.id);
@@ -239,52 +252,69 @@ async function displayWorksInModal() {
     const modalWrapper = document.querySelector('.modal-wrapper');
 
     try {
-        const worksResponse = await fetch("http://localhost:5678/api/works");
-        const dataWorks = await worksResponse.json();
+        const dataWorks = await getWorks();
 
-        modalWrapper.innerHTML = "";
 
-        /*Création de l'élément pour la croix de fermeture*/
+        /* Création de l'élément pour la croix de fermeture */
         const closeButton = document.createElement('span');
         closeButton.innerHTML = '&times;';
         closeButton.classList.add('close-button');
-        modalWrapper.appendChild(closeButton);
 
-        /*eventlistener pour fermer la fenêtre modale en cliquant sur la croix*/
+        /* Création de la div pour le titre et la croix */
+        const titleAndCloseDiv = document.createElement('div');
+        titleAndCloseDiv.classList.add('modal-title');
+        titleAndCloseDiv.appendChild(closeButton);
+
+        modalWrapper.appendChild(titleAndCloseDiv);
+
+        /* eventlistener pour fermer la fenêtre modale en cliquant sur la croix */
         closeButton.addEventListener('click', closeModal);
 
-        /*eventlistener pour la touche Échap qui permet de fermer la fenêtre modale*/
+        /* eventlistener pour la touche Échap qui permet de fermer la fenêtre modale */
         window.addEventListener('keydown', function (event) {
             if (event.key === 'Escape') {
                 closeModal();
             }
         });
-        /*Ajout du titre "Galerie photo"*/
+
+        /* Ajout du titre "Galerie photo" à la nouvelle div */
         const galleryTitle = document.createElement('h3');
         galleryTitle.textContent = 'Galerie photo';
         galleryTitle.style.textAlign = 'center';
-        modalWrapper.appendChild(galleryTitle);
 
+        titleAndCloseDiv.appendChild(galleryTitle);
 
+        /* Création de la div pour les works */
+        const worksDiv = document.createElement('div');
+        worksDiv.classList.add('works-modal');
 
         dataWorks.forEach((work) => {
             const workElement = createWorkElement(work);
-            modalWrapper.appendChild(workElement);
+            worksDiv.appendChild(workElement);
         });
-        /* Création du bouton "Ajouter une photo" */
-        const addPhotoButtonModal = document.createElement('button');
-        addPhotoButtonModal.textContent = 'Ajouter une photo';
-        addPhotoButtonModal.classList.add('add-photo-button');
-        addPhotoButtonModal.style.backgroundColor = '#1D6154';
-        addPhotoButtonModal.style.color = 'white';
-        addPhotoButtonModal.style.padding = '10px';
-        addPhotoButtonModal.style.border = 'none';
-        addPhotoButtonModal.style.cursor = 'pointer';
-        addPhotoButtonModal.style.marginTop = '20px';
 
-        /*Insérer le bouton après la galerie d'images*/
+        modalWrapper.appendChild(worksDiv);
+
+        /* Création de la div pour le bouton "Ajouter une photo" */
+        const addPhotoButtonModal = document.createElement('div');
+        addPhotoButtonModal.classList.add('add-photo-modal');
+
+        const addPhotoButton = document.createElement('button');
+        addPhotoButton.textContent = 'Ajouter une photo';
+        addPhotoButton.classList.add('add-photo-button');
+        addPhotoButton.style.backgroundColor = '#1D6154';
+        addPhotoButton.style.color = 'white';
+        addPhotoButton.style.padding = '10px';
+        addPhotoButton.style.border = 'none';
+        addPhotoButton.style.cursor = 'pointer';
+        addPhotoButton.style.marginTop = '20px';
+        addPhotoButton.style.borderRadius = '20px';
+        addPhotoButton.style.width = '45%';
+
+        addPhotoButtonModal.appendChild(addPhotoButton);
         modalWrapper.appendChild(addPhotoButtonModal);
-        /*Gestionnaire d'événements pour le bouton Ajouter une photo*/
+
+        /* Gestionnaire d'événements pour le bouton Ajouter une photo */
         addPhotoButtonModal.addEventListener('click', function () {
             console.log('Ajouter une photo');
         });
@@ -292,7 +322,6 @@ async function displayWorksInModal() {
         console.log("Erreur lors de l'affichage des works dans la fenêtre modale : ", error);
     }
 }
-
 
 /*Fonction pour fermer la fenêtre modale*/
 function closeModal() {

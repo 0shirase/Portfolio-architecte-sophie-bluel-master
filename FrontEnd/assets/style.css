@@ -223,8 +223,12 @@ footer nav ul {
 .portfoliotitle {
 	display: flex;
 	justify-content: center;
+	gap: 15px;
 }
 
+.modified-button {
+	font-family: Work Sans;
+}
 /* modal */
 .modal {
 	position: fixed;
@@ -244,10 +248,11 @@ footer nav ul {
     left: 50%;
     transform: translate(-50%, -50%);
     overflow: auto;
-    width: 33%;
+    width: 37%;
     padding: 50px;
     background-color: #FFF;
 	flex-wrap: wrap;
+	border-radius: 10px;
 }
 
 
@@ -263,7 +268,27 @@ footer nav ul {
 	font-size: 24px;
 	margin-bottom: 20px;
 	width: 100%;
+	text-decoration: none;
+	
 }
+
+.modal-title {
+	width: 100%;
+	margin-bottom: 30px;
+}
+
+.works-modal {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+.add-photo-modal {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+}
+
 
   /* Ajoutez ce style pour le conteneur de l'image */
 .img-container {
@@ -282,6 +307,14 @@ footer nav ul {
     cursor: pointer;
     z-index: 2; 
 	background-color: black;
+	font-family: Work Sans;
+	border-radius: 6px;
+	padding: 4%;
+}
+
+.fa-trash-alt {
+	font-weight: normal;
+	
 }
 
 .close-button {
