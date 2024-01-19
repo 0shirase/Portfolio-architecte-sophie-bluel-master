@@ -223,11 +223,16 @@ footer nav ul {
 .portfoliotitle {
 	display: flex;
 	justify-content: center;
-	gap: 15px;
+	gap: 30px;
 }
 
 .modified-button {
 	font-family: Work Sans;
+}
+
+.error-message {
+	color: red;
+	font-weight: bold;
 }
 /* modal */
 .modal {
@@ -301,7 +306,7 @@ footer nav ul {
 .img-container {
     position: relative;
     overflow: hidden;
-	padding-bottom: 15px;
+	padding-bottom: 30px;
 }
 
 /* Style pour le bouton de suppression */
@@ -327,11 +332,97 @@ footer nav ul {
 
 .close-button {
 	position: absolute;
-	top: 10px;
-	right: 10px;
+	top: 15px;
+	right: 30px;
 	font-size: 30px;
 }
 
 .close-button:hover{
 	cursor: pointer;
 }
+
+.photo-form {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.photo-form .modal-wrapper {
+	display: flex;
+	justify-content: center;
+}
+
+.back-arrow {
+    position: absolute;
+    top: -25px;
+    left: 30px;
+    font-size: 20px;
+    color: black;
+    cursor: pointer;
+}
+
+.header-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.input-div {
+    margin-top: 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.button-div {
+    margin-top: 20px;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+.header-div .close-button {
+	position: absolute;
+	top: -25px;
+	right: 30px;
+}
+
+.Submit-Button-Modal {
+	display: flex;
+	justify-content: center;
+}
+
+.rectangle-div {
+    background-color: #3498db; /* Bleu */
+    padding: 20px;
+    text-align: center;
+}
+
+.add-photo-button-rectangle {
+    background-color: #CBD6DC; 
+    color: #306685;
+	font-size: 14px;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+.rectangle-div {
+	background: #E8F1F6;
+	border-radius: 3px;
+	padding-left: 25%;
+	padding-right: 25%;
+	display: flex;
+	flex-direction: column;
+}
+
+.image-icon {
+	margin-bottom: 10px; 
+	font-size: 45px; 
+	color: #CBD6DC;
+  }
+
+  

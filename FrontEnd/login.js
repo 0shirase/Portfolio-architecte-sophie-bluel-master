@@ -36,6 +36,7 @@ document.getElementById("form-login").addEventListener("submit", function (event
         })
         .catch(error => {
             console.log(error);
-            document.getElementById("erreur-message").innerText = "Identifiant ou mot de passe incorrect"
+            document.getElementById("erreur-message").innerText = "Identifiant ou mot de passe incorrect";
+            document.getElementById("erreur-message").classList.add("error-message");
         })
 })

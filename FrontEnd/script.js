@@ -2,6 +2,7 @@ const gallery = document.querySelector('.gallery');
 const filters = document.querySelector(".filters");
 const portfoliotitle = document.querySelector(".portfoliotitle");
 const modal = document.querySelector('#modal1');
+const token = sessionStorage.getItem("token");
 
 async function main() {
     displayWorks();
@@ -42,11 +43,22 @@ async function getCategories() {
 /* fonction pour delete les works avec l'API */
 async function deleteProject(projectId) {
     try {
-        const response = await fetch(`http://localhost:5678/api/works/1`, {
+        const response = await fetch(`http://localhost:5678/api/works/${projectId}`, {
             method: 'DELETE',
+            headers: {
+                accept: "*/*",
+                Authorization: `Bearer ${token}`,
+            },
         });
 
-        if (!response.ok) {
+        if (response.ok) {
+            console.log("Projet supprimé avec succès");
+            displayWorks();
+            displayWorksInModal();
+        } else if (response.status === 401) {
+            throw new Error("Action non autorisé");
+        }
+        else {
             throw new Error('Erreur lors de la suppression du projet');
         }
     } catch (error) {
@@ -135,7 +147,7 @@ function admin() {
     const loginLink = document.getElementById("login");
     const logoutLink = document.getElementById("logout");
 
-    const token = sessionStorage.getItem("token");
+
     if (token) {
         loginLink.style.display = "none";
         logoutLink.style.display = "block";
@@ -164,7 +176,7 @@ function admin() {
 
         const icon = document.createElement('i');
         icon.classList.add('fas', 'fa-pen-to-square');
-        icon.style.marginRight = '5px';
+        icon.style.marginRight = '10px';
         iconTextContainer.appendChild(icon);
 
         /*Création du texte*/
@@ -267,6 +279,7 @@ function createWorkElement(work) {
 
 /* Fonction pour afficher les works dans la fenêtre modale */
 async function displayWorksInModal() {
+
     const modalWrapper = document.querySelector('.modal-wrapper');
 
     try {
@@ -337,10 +350,154 @@ async function displayWorksInModal() {
         addPhotoButtonModal.appendChild(addPhotoButton);
         modalWrapper.appendChild(addPhotoButtonModal);
 
-        /* Gestionnaire d'événements pour le bouton Ajouter une photo */
-        addPhotoButtonModal.addEventListener('click', function () {
-            console.log('Ajouter une photo');
+        /*events listener pour le bouton Ajouter une photo*/
+        addPhotoButton.addEventListener('click', function () {
+            /*Masquer la galerie photo de la fenêtre modale*/
+            titleAndCloseDiv.style.display = 'none';
+            worksDiv.style.display = 'none';
+            lineDivider.style.display = 'none';
+            addPhotoButtonModal.style.display = 'none';
+
+            /*Création du formulaire d'ajout de photo*/
+            const photoForm = createPhotoForm();
+            modalWrapper.appendChild(photoForm);
         });
+
+        addPhotoButtonModal.appendChild(addPhotoButton);
+        modalWrapper.appendChild(addPhotoButtonModal);
+
+
+        /*Fonction pour créer le formulaire d'ajout de photo*/
+        function createPhotoForm() {
+            const form = document.createElement('form');
+            form.classList.add('photo-form');
+
+            /*Div pour le titre, la croix, et la flèche*/
+            const headerDiv = document.createElement('div');
+            headerDiv.classList.add('header-div');
+
+            const formTitle = document.createElement('h3');
+            formTitle.textContent = 'Ajout photo';
+            formTitle.style.textAlign = 'center';
+            headerDiv.appendChild(formTitle);
+
+            /*Création de la croix pour fermer*/
+            const closeFormButton = document.createElement('span');
+            closeFormButton.innerHTML = '&times;';
+            closeFormButton.classList.add('close-button');
+
+
+
+            headerDiv.appendChild(closeFormButton);
+
+            /*Ajout de la flèche pour revenir en arrière*/
+            const backArrow = document.createElement('i');
+
+
+            headerDiv.appendChild(backArrow);
+
+            form.appendChild(headerDiv);
+
+            /* création des Div pour le rectangle avec le bouton et le texte */
+            const rectangleDiv = document.createElement('div');
+            rectangleDiv.classList.add('rectangle-div');
+
+            /*Ajout de l'icône fa-image au-dessus du bouton*/
+            const imageIcon = document.createElement('i');
+            imageIcon.classList.add('fas', 'fa-image', 'image-icon');
+            rectangleDiv.appendChild(imageIcon);
+
+            /*Ajout du bouton Ajouter Photo au rectangle*/
+            const addButton = document.createElement('button');
+            addButton.textContent = '+ Ajouter Photo';
+            addButton.classList.add('add-photo-button-rectangle');
+            rectangleDiv.appendChild(addButton);
+
+            /*Ajout du texte en dessous du bouton*/
+            const infoText = document.createElement('p');
+            infoText.textContent = 'jpg.png : 4mo max';
+            rectangleDiv.appendChild(infoText);
+
+            /*Ajout du rectangle à la div du formulaire*/
+            form.appendChild(rectangleDiv);
+
+            /* création des Div pour les inputs titre et catégorie */
+            const inputDiv = document.createElement('div');
+            inputDiv.classList.add('input-div');
+
+            const titleLabel = document.createElement('label');
+            titleLabel.textContent = 'Titre';
+            const titleInput = document.createElement('input');
+            titleInput.type = 'text';
+            titleInput.name = 'title';
+
+            const categoryLabel = document.createElement('label');
+            categoryLabel.textContent = 'Catégorie';
+            const categoryInput = document.createElement('input');
+            categoryInput.type = 'text';
+            categoryInput.name = 'category';
+
+            inputDiv.appendChild(titleLabel);
+            inputDiv.appendChild(titleInput);
+            inputDiv.appendChild(categoryLabel);
+            inputDiv.appendChild(categoryInput);
+
+            form.appendChild(inputDiv);
+
+
+            /*création de la Div pour la ligne de séparation*/
+            const lineDivider = document.createElement('div');
+            lineDivider.classList.add('line-divider');
+            form.appendChild(lineDivider);
+            lineDivider.style.marginTop = '40px';
+
+
+
+            /* création de la Div pour le bouton Valider*/
+            const SubmitButtonModal = document.createElement('div');
+            SubmitButtonModal.classList.add('Submit-Button-Modal');
+
+            const SubmitButton = document.createElement('button');
+            SubmitButton.textContent = 'Valider';
+            SubmitButton.classList.add('Submit-Button-Modal');
+            SubmitButton.style.backgroundColor = '#1D6154';
+            SubmitButton.style.color = 'white';
+            SubmitButton.style.padding = '10px';
+            SubmitButton.style.border = 'none';
+            SubmitButton.style.cursor = 'pointer';
+            SubmitButton.style.marginTop = '20px';
+            SubmitButton.style.borderRadius = '20px';
+            SubmitButton.style.width = '37%';
+
+            SubmitButtonModal.appendChild(SubmitButton);
+            form.appendChild(SubmitButtonModal);
+
+            /*Ajout de la flèche pour revenir en arrière*/
+            backArrow.classList.add('fas', 'fa-arrow-left', 'back-arrow');
+
+            /* event listener pour revenir en arrière*/
+            backArrow.addEventListener('click', function () {
+                /* Afficher à nouveau la galerie photo de la fenêtre modale*/
+                titleAndCloseDiv.style.display = 'flex';
+                worksDiv.style.display = 'flex';
+                lineDivider.style.display = 'block';
+                addPhotoButtonModal.style.display = 'flex';
+
+                /*Supprimer le formulaire d'ajout de photo*/
+                modalWrapper.removeChild(form);
+            });
+
+            form.appendChild(backArrow);
+
+            /*Appliquer des styles pour centrer le formulaire*/
+            form.style.display = 'flex';
+            form.style.flexDirection = 'column';
+            form.style.position = 'relative';
+            form.style.margin = 'auto';
+            form.style.width = '100%';
+
+            return form;
+        }
     } catch (error) {
         console.log("Erreur lors de l'affichage des works dans la fenêtre modale : ", error);
     }
