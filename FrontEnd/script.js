@@ -1,4 +1,5 @@
 const gallery = document.querySelector('.gallery');
+
 const filters = document.querySelector(".filters");
 const portfoliotitle = document.querySelector(".portfoliotitle");
 const modal = document.querySelector('#modal1');
@@ -8,7 +9,7 @@ async function main() {
     displayWorks();
     displayfilters();
     admin();
-    displayWorksInModal();
+    createModal();
     closeModal();
 }
 
@@ -54,6 +55,7 @@ async function deleteProject(projectId) {
         if (response.ok) {
             console.log("Projet supprimé avec succès");
             displayWorks();
+            //debugger;
             displayWorksInModal();
         } else if (response.status === 401) {
             throw new Error("Action non autorisé");
@@ -73,9 +75,9 @@ async function displayWorks(categorieId) {
         const dataworks = await getWorks();
         gallery.innerHTML = "";
 
-        dataworks.forEach((works) => {
-            if (categorieId == works.category.id || categorieId == null) {
-                createWorks(works);
+        dataworks.forEach((work) => {
+            if (categorieId == work.category.id || categorieId == null) {
+                createWorks(work);
             }
         });
     }
@@ -83,6 +85,14 @@ async function displayWorks(categorieId) {
         console.log("Erreur durant l'affichage des projets")
     }
 }
+
+
+
+
+
+
+
+
 
 /***Création des projets dans la gallery***/
 function createWorks(works) {
@@ -277,12 +287,38 @@ function createWorkElement(work) {
     return figure;
 }
 
-/* Fonction pour afficher les works dans la fenêtre modale */
+/***Affichage dynamique de la gallery***/
 async function displayWorksInModal() {
 
-    const modalWrapper = document.querySelector('.modal-wrapper');
+    try {
+        const dataworks = await getWorks();
+
+        const galleryModal = document.querySelector('.works-modal');
+        console.log(galleryModal);
+        galleryModal.innerHTML = "";
+
+        dataworks.forEach((work) => {
+           
+            const workElement = createWorkElement(work);
+            galleryModal.appendChild(workElement);
+           
+            
+        });
+    }
+    catch (error) {
+        console.log("Erreur durant l'affichage des projets")
+    }
+}
+
+
+/* Fonction pour afficher les works dans la fenêtre modale */
+async function createModal() {
 
     try {
+        const modalWrapper = document.querySelector('.modal-wrapper');
+
+      
+    
         const dataWorks = await getWorks();
 
 
@@ -366,141 +402,171 @@ async function displayWorksInModal() {
         addPhotoButtonModal.appendChild(addPhotoButton);
         modalWrapper.appendChild(addPhotoButtonModal);
 
-
-        /*Fonction pour créer le formulaire d'ajout de photo*/
-        function createPhotoForm() {
-            const form = document.createElement('form');
-            form.classList.add('photo-form');
-
-            /*Div pour le titre, la croix, et la flèche*/
-            const headerDiv = document.createElement('div');
-            headerDiv.classList.add('header-div');
-
-            const formTitle = document.createElement('h3');
-            formTitle.textContent = 'Ajout photo';
-            formTitle.style.textAlign = 'center';
-            headerDiv.appendChild(formTitle);
-
-            /*Création de la croix pour fermer*/
-            const closeFormButton = document.createElement('span');
-            closeFormButton.innerHTML = '&times;';
-            closeFormButton.classList.add('close-button');
+        
+        /*Gestionnaire d'événements pour détecter les clics en dehors de la fenêtre */
+        window.addEventListener('click', function (event) {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
 
 
 
-            headerDiv.appendChild(closeFormButton);
-
-            /*Ajout de la flèche pour revenir en arrière*/
-            const backArrow = document.createElement('i');
-
-
-            headerDiv.appendChild(backArrow);
-
-            form.appendChild(headerDiv);
-
-            /* création des Div pour le rectangle avec le bouton et le texte */
-            const rectangleDiv = document.createElement('div');
-            rectangleDiv.classList.add('rectangle-div');
-
-            /*Ajout de l'icône fa-image au-dessus du bouton*/
-            const imageIcon = document.createElement('i');
-            imageIcon.classList.add('fas', 'fa-image', 'image-icon');
-            rectangleDiv.appendChild(imageIcon);
-
-            /*Ajout du bouton Ajouter Photo au rectangle*/
-            const addButton = document.createElement('button');
-            addButton.textContent = '+ Ajouter Photo';
-            addButton.classList.add('add-photo-button-rectangle');
-            rectangleDiv.appendChild(addButton);
-
-            /*Ajout du texte en dessous du bouton*/
-            const infoText = document.createElement('p');
-            infoText.textContent = 'jpg.png : 4mo max';
-            rectangleDiv.appendChild(infoText);
-
-            /*Ajout du rectangle à la div du formulaire*/
-            form.appendChild(rectangleDiv);
-
-            /* création des Div pour les inputs titre et catégorie */
-            const inputDiv = document.createElement('div');
-            inputDiv.classList.add('input-div');
-
-            const titleLabel = document.createElement('label');
-            titleLabel.textContent = 'Titre';
-            const titleInput = document.createElement('input');
-            titleInput.type = 'text';
-            titleInput.name = 'title';
-
-            const categoryLabel = document.createElement('label');
-            categoryLabel.textContent = 'Catégorie';
-            const categoryInput = document.createElement('input');
-            categoryInput.type = 'text';
-            categoryInput.name = 'category';
-
-            inputDiv.appendChild(titleLabel);
-            inputDiv.appendChild(titleInput);
-            inputDiv.appendChild(categoryLabel);
-            inputDiv.appendChild(categoryInput);
-
-            form.appendChild(inputDiv);
-
-
-            /*création de la Div pour la ligne de séparation*/
-            const lineDivider = document.createElement('div');
-            lineDivider.classList.add('line-divider');
-            form.appendChild(lineDivider);
-            lineDivider.style.marginTop = '40px';
-
-
-
-            /* création de la Div pour le bouton Valider*/
-            const SubmitButtonModal = document.createElement('div');
-            SubmitButtonModal.classList.add('Submit-Button-Modal');
-
-            const SubmitButton = document.createElement('button');
-            SubmitButton.textContent = 'Valider';
-            SubmitButton.classList.add('Submit-Button-Modal');
-            SubmitButton.style.backgroundColor = '#1D6154';
-            SubmitButton.style.color = 'white';
-            SubmitButton.style.padding = '10px';
-            SubmitButton.style.border = 'none';
-            SubmitButton.style.cursor = 'pointer';
-            SubmitButton.style.marginTop = '20px';
-            SubmitButton.style.borderRadius = '20px';
-            SubmitButton.style.width = '37%';
-
-            SubmitButtonModal.appendChild(SubmitButton);
-            form.appendChild(SubmitButtonModal);
-
-            /*Ajout de la flèche pour revenir en arrière*/
-            backArrow.classList.add('fas', 'fa-arrow-left', 'back-arrow');
-
-            /* event listener pour revenir en arrière*/
-            backArrow.addEventListener('click', function () {
-                /* Afficher à nouveau la galerie photo de la fenêtre modale*/
-                titleAndCloseDiv.style.display = 'flex';
-                worksDiv.style.display = 'flex';
-                lineDivider.style.display = 'block';
-                addPhotoButtonModal.style.display = 'flex';
-
-                /*Supprimer le formulaire d'ajout de photo*/
-                modalWrapper.removeChild(form);
-            });
-
-            form.appendChild(backArrow);
-
-            /*Appliquer des styles pour centrer le formulaire*/
-            form.style.display = 'flex';
-            form.style.flexDirection = 'column';
-            form.style.position = 'relative';
-            form.style.margin = 'auto';
-            form.style.width = '100%';
-
-            return form;
-        }
+        
     } catch (error) {
         console.log("Erreur lors de l'affichage des works dans la fenêtre modale : ", error);
     }
+}
+
+
+/*Fonction pour créer le formulaire d'ajout de photo*/
+function createPhotoForm() {
+    const form = document.createElement('form');
+    form.classList.add('photo-form');
+
+    /* Div pour le titre, la croix, et la flèche */
+    const headerDiv = document.createElement('div');
+    headerDiv.classList.add('header-div');
+
+    const formTitle = document.createElement('h3');
+    formTitle.textContent = 'Ajout photo';
+    formTitle.style.textAlign = 'center';
+    headerDiv.appendChild(formTitle);
+
+    /* Création de la croix pour fermer */
+    const closeFormButton = document.createElement('span');
+    closeFormButton.innerHTML = '&times;';
+    closeFormButton.classList.add('close-button');
+    headerDiv.appendChild(closeFormButton);
+
+    /* Ajout de la flèche pour revenir en arrière */
+    const backArrow = document.createElement('i');
+    headerDiv.appendChild(backArrow);
+
+    form.appendChild(headerDiv);
+
+    /* Création des Div pour le rectangle avec le bouton et le texte */
+    const rectangleDiv = document.createElement('div');
+    rectangleDiv.classList.add('rectangle-div');
+
+    /* Ajout de l'icône fa-image au-dessus du bouton */
+    const imageIcon = document.createElement('i');
+    imageIcon.classList.add('fas', 'fa-image', 'image-icon');
+    rectangleDiv.appendChild(imageIcon);
+
+    /* Création du champ d'entrée de type "file" */
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.style.display = 'none'; 
+    rectangleDiv.appendChild(fileInput);
+
+    /* Création du bouton "Ajouter Photo" */
+    const addButton = document.createElement('button');
+    addButton.textContent = 'Ajouter Photo';
+    addButton.classList.add('add-photo-button-rectangle');
+
+    /* Gestionnaire d'événements pour le bouton "Ajouter Photo" */
+    addButton.addEventListener('click', function () {
+        // Simuler un clic sur le champ de fichier
+        fileInput.click();
+    });
+
+    /* Gestionnaire d'événements pour le champ d'entrée "file" */
+    fileInput.addEventListener('change', function (event) {
+        /* sélection de fichier ici */
+        const selectedFile = event.target.files[0];
+        console.log('Fichier sélectionné :', selectedFile);
+    });
+
+    /*Ajout du bouton "Ajouter Photo" au rectangleDiv*/
+    rectangleDiv.appendChild(addButton);
+
+    /* Ajout du texte en dessous du bouton */
+    const infoText = document.createElement('p');
+    infoText.textContent = 'jpg.png : 4mo max';
+    rectangleDiv.appendChild(infoText);
+
+    /* Ajout du rectangle à la div du formulaire */
+    form.appendChild(rectangleDiv);
+
+    /* Création des Div pour les inputs titre et catégorie */
+    const inputDiv = document.createElement('div');
+    inputDiv.classList.add('input-div');
+
+    const titleLabel = document.createElement('label');
+    titleLabel.textContent = 'Titre';
+    const titleInput = document.createElement('input');
+    titleInput.type = 'text';
+    titleInput.name = 'title';
+
+    const categoryLabel = document.createElement('label');
+    categoryLabel.textContent = 'Catégorie';
+    const categoryInput = document.createElement('input');
+    categoryInput.type = 'text';
+    categoryInput.name = 'category';
+
+    inputDiv.appendChild(titleLabel);
+    inputDiv.appendChild(titleInput);
+    inputDiv.appendChild(categoryLabel);
+    inputDiv.appendChild(categoryInput);
+
+    form.appendChild(inputDiv);
+
+    /* Création de la Div pour la ligne de séparation */
+    const lineDivider = document.createElement('div');
+    lineDivider.classList.add('line-divider');
+    form.appendChild(lineDivider);
+    lineDivider.style.marginTop = '40px';
+
+    /* Création de la Div pour le bouton Valider */
+    const SubmitButtonModal = document.createElement('div');
+    SubmitButtonModal.classList.add('Submit-Button-Modal');
+
+    const SubmitButton = document.createElement('button');
+    SubmitButton.textContent = 'Valider';
+    SubmitButton.classList.add('Submit-Button-Modal');
+    SubmitButton.style.backgroundColor = '#1D6154';
+    SubmitButton.style.color = 'white';
+    SubmitButton.style.padding = '10px';
+    SubmitButton.style.border = 'none';
+    SubmitButton.style.cursor = 'pointer';
+    SubmitButton.style.marginTop = '20px';
+    SubmitButton.style.borderRadius = '20px';
+    SubmitButton.style.width = '37%';
+
+    SubmitButtonModal.appendChild(SubmitButton);
+    form.appendChild(SubmitButtonModal);
+
+    /*Gestionnaire d'événements pour le bouton Valider*/
+    SubmitButton.addEventListener('click', async function (event) {
+        event.preventDefault()
+    });
+
+    /* Ajout de la flèche pour revenir en arrière */
+    backArrow.classList.add('fas', 'fa-arrow-left', 'back-arrow');
+
+    /* Event listener pour revenir en arrière */
+    backArrow.addEventListener('click', function () {
+        /* Afficher à nouveau la galerie photo de la fenêtre modale */
+        titleAndCloseDiv.style.display = 'flex';
+        worksDiv.style.display = 'flex';
+        lineDivider.style.display = 'block';
+        addPhotoButtonModal.style.display = 'flex';
+
+        /* Supprimer le formulaire d'ajout de photo */
+        modalWrapper.removeChild(form);
+    });
+
+    form.appendChild(backArrow);
+
+    /* Appliquer des styles pour centrer le formulaire */
+    form.style.display = 'flex';
+    form.style.flexDirection = 'column';
+    form.style.position = 'relative';
+    form.style.margin = 'auto';
+    form.style.width = '100%';
+
+    return form;
 }
 
 /*Fonction pour fermer la fenêtre modale*/
@@ -508,12 +574,4 @@ function closeModal() {
     modal.style.display = 'none';
     modal.setAttribute('aria-hidden', 'true');
 }
-
-/*Gestionnaire d'événements pour détecter les clics en dehors de la fenêtre */
-window.addEventListener('click', function (event) {
-    if (event.target === modal) {
-        closeModal();
-    }
-});
-
 
