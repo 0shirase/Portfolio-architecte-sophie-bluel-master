@@ -9,8 +9,8 @@ async function main() {
     displayWorks();
     displayfilters();
     admin();
-    createModal();
-    closeModal();
+    //createModal();
+    //closeModal();
 }
 
 main();
@@ -256,7 +256,7 @@ const modifiedButton = document.querySelector('.modified-button');
 modifiedButton.addEventListener('click', openModal);
 
 /*création du contenu de la fenêtre modale*/
-const modalWrapper = document.querySelector('.modal-wrapper');
+//const modalWrapper = document.querySelector('.modal-wrapper');
 
 /* ajout des images pour la gallery modale*/
 function createWorkElement(work) {
@@ -414,7 +414,7 @@ async function createModal() {
 
 
     } catch (error) {
-        console.log("Erreur lors de l'affichage des works dans la fenêtre modale : ", error);
+        console.log("Erreur durant l'affichage des projets");
     }
 }
 
