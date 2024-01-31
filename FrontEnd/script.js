@@ -542,26 +542,26 @@ function createPhotoForm() {
     /*Gestionnaire d'événements pour le bouton Valider*/
     SubmitButton.addEventListener('click', async function (event) {
         event.preventDefault();
-        // Récupérer les valeurs du formulaire
+        /* récupération des valeurs du formulaire */
         const title = titleInput.value;
         const category = categoryInput.value;
         const file = fileInput.files[0];
 
-        // Vérifier si tous les champs sont remplis
+        /* Vérification des champs */
         if (title && category && file) {
             try {
-                // Envoyer les données au serveur
+                /*Envoies des données au serveur*/
                 await postData(title, category, file);
 
-                // Mettre à jour la galerie modale
+                /* Mise à jour des gallery */
                 displayWorksInModal();
+                displayWorks();
 
-                // Réinitialiser ou fermer le formulaire d'ajout de photo
+                /*Réinialisation du formulaire*/
                 titleInput.value = '';
                 categoryInput.value = '';
                 fileInput.value = '';
-                // ou bien, pour fermer le formulaire
-                // modalWrapper.removeChild(form);
+                
             } catch (error) {
                 console.error('Erreur lors de l\'ajout du work :', error);
             }
@@ -587,7 +587,7 @@ function closeModal() {
     modal.setAttribute('aria-hidden', 'true');
 }
 
-// Fonction pour envoyer les données au serveur et ajouter un nouveau work
+/*Fonction pour envoyer les données au serveur et ajouter un nouveau work*/
 async function postData(title, category, file) {
     const formData = new FormData();
     formData.append('title', title);
