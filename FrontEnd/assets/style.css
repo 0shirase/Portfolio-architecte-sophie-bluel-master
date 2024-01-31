@@ -425,4 +425,6 @@ footer nav ul {
 	color: #CBD6DC;
   }
 
- 
+  .inputfile {
+	display: none; /* Masque le champ d'entrée de type "file" par défaut */
+}
